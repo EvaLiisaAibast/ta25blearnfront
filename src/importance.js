@@ -1,6 +1,3 @@
-// Asja olulisuse tasemed: kõrge -> madal.
-// rank määrab sorteerimise järjekorra (suurem = tähtsam),
-// colorClass on Bulma värviklass (tag jaoks), rowClass värvib kogu nimekirja rea.
 export const IMPORTANCE = {
     high: {
         label: 'Kõrge',
@@ -33,8 +30,6 @@ export function importanceInfo(key) {
     };
 }
 
-// Sorteerib nimekirja olulisuse järgi: kõige olulisem ees.
-// Võrdse olulisuse korral säilib algne järjekord (id järgi).
 export function sortByImportance(items) {
     return [...items].sort(
         (a, b) => importanceInfo(b.importance).rank - importanceInfo(a.importance).rank || a.id - b.id,

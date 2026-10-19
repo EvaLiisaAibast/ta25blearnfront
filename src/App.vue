@@ -28,12 +28,10 @@ function add(){
   importance.value = DEFAULT_IMPORTANCE;
 }
 
-// Kõik kolm nimekirja on olulisuse järgi sorteeritud: kõige olulisem ees.
 let allItems = computed(() => sortByImportance(items.value));
 let doneItems = computed(() => sortByImportance(items.value.filter(item => item.isDone)));
 let toDoItems = computed(() => sortByImportance(items.value.filter(item => !item.isDone)));
 
-// Täidetuse protsent paremasse "kuu" dialõõssi.
 let pct = computed(() =>
   items.value.length ? Math.round(doneItems.value.length / items.value.length * 100) : 0,
 );
