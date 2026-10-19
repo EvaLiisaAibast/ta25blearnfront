@@ -1,53 +1,84 @@
 @use "bulma/sass" with (
-    $primary: coral,
+    $primary: #c2a9eb,
 );
 
 /* ============================================================
-   Theme adapted from the SpaceHey paper/corkboard layout
-   (originally by TRaGiiCTaYY). SpaceHey-only selectors were
-   dropped; the cream + paper + handwriting look is kept and
-   mapped onto the elements this Vue app actually renders.
-   Custom .tape / .pin are pure-CSS, ported from the MvcMovie
-   project. No external images -- texture is CSS gradients.
+   Theme adapted from peachyvoid.com (a Neocities-style site).
+   Their look leans on their own images (lace PNGs, wallpaper
+   JPG, cursor art), so none of that is copied or hotlinked --
+   the same feel is rebuilt with CSS gradients + borders.
+   Palette and type sampled from their stylesheet:
+     panels #2b1d12 / #352b20, cream border #e2ddc5,
+     lavender link #c2a9eb, pink hover #ffb3d9,
+     VT323 (VHS) + pixel font.
+   Custom .tape / .pin are kept from the MvcMovie port.
    ============================================================ */
 
 :root {
-    --headers: #1c1712;
-    --text: #241f18;
-    --links: #6b4f2a;
-    --hover: #a86b2c;
-    --borders: 4px solid #faf5f2;
-    --paper: #faf5f2;
-    --wall: #f4e7b0;
-    --curve: 8px;
-    --font-hand: 'Kristi', 'Reenie Beanie', cursive;
-    --font-cute: 'Hachi Maru Pop', 'East Sea Dokdo', cursive;
-    --font-label: 'East Sea Dokdo', cursive;
+    --wall: #352b20;
+    --panel: #2b1d12;
+    --panel-deep: #21170f;
+    --ink: #ffffff;
+    --cream: #e2ddc5;
+    --link: #c2a9eb;
+    --link-hover: #ffb3d9;
+    --tint: #cfb1dd;
+    --borders: 6px double #e2ddc5;
+    --curve: 2px;
+    --font-vhs: 'VT323', 'Courier New', monospace;
+    --font-pixel: 'Jersey 10', 'PixelFont', monospace;
+    --font-body: 'Texturina', Verdana, Geneva, Tahoma, sans-serif;
+    --font-display: 'NewRocker', Georgia, serif;
 }
 
-/* --- Wall / background: warm cream with a soft paper grain --- */
+/* --- Wall: dark warm brown with a soft glow, fixed --- */
 body {
     background-color: var(--wall);
     background-image:
-        radial-gradient(circle at 22% 12%, rgba(255, 255, 255, 0.35), transparent 42%),
-        radial-gradient(circle at 78% 88%, rgba(120, 90, 40, 0.10), transparent 46%),
-        repeating-linear-gradient(0deg, rgba(90, 70, 30, 0.02) 0 2px, transparent 2px 4px),
-        repeating-linear-gradient(90deg, rgba(90, 70, 30, 0.02) 0 2px, transparent 2px 4px);
+        radial-gradient(circle at 20% 8%, rgba(194, 169, 235, 0.12), transparent 40%),
+        radial-gradient(circle at 82% 92%, rgba(255, 179, 217, 0.08), transparent 44%),
+        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.015) 0 3px, transparent 3px 6px);
     background-attachment: fixed;
-    color: var(--text);
-    font-family: var(--font-hand);
+    color: var(--ink);
+    font-family: var(--font-body);
+    letter-spacing: 1px;
+    text-shadow: 0px 0px 1px #bbb;
+}
+
+/* --- Lace trim along the top, pure CSS scallop --- */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 14px;
+    z-index: 9999;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 10px -3px, transparent 9px, var(--cream) 9px, var(--cream) 11px, transparent 11px) repeat-x;
+    background-size: 20px 14px;
+    opacity: 0.85;
 }
 
 /* --- Typography --- */
 h1, h2, h3, h4, h5 {
-    color: var(--headers) !important;
-    font-family: var(--font-hand) !important;
+    color: var(--cream) !important;
+    font-family: var(--font-display) !important;
     text-transform: lowercase;
-    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.35);
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(194, 169, 235, 0.5), 2px 2px 2px #000;
 }
 
+a {
+    color: var(--link) !important;
+    text-decoration: none;
+}
+
+a:hover { color: var(--link-hover) !important; }
+
 /* ============================================================
-   Custom-rendered washi TAPE  (from MvcMovie)
+   Custom-rendered washi TAPE  (from MvcMovie), recolored
    ============================================================ */
 .tape {
     position: absolute;
@@ -56,9 +87,9 @@ h1, h2, h3, h4, h5 {
     width: 96px;
     height: 24px;
     transform: translateX(-50%) rotate(-2deg);
-    background: linear-gradient(180deg, rgba(226, 205, 150, 0.92), rgba(200, 174, 115, 0.85));
-    opacity: 0.95;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.28);
+    background: linear-gradient(180deg, rgba(207, 177, 221, 0.9), rgba(160, 130, 190, 0.82));
+    opacity: 0.92;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
     z-index: 3;
     pointer-events: none;
 }
@@ -70,7 +101,7 @@ h1, h2, h3, h4, h5 {
     top: 0;
     bottom: 0;
     width: 1px;
-    background: rgba(255, 250, 235, 0.6);
+    background: rgba(255, 255, 255, 0.45);
 }
 
 .tape::before { left: 4px; }
@@ -113,7 +144,7 @@ h1, h2, h3, h4, h5 {
 .pin-r { right: 26px; left: auto; }
 
 /* ============================================================
-   Container + the "add item" toolbar
+   Container + the "add item" panel
    ============================================================ */
 .container.content {
     max-width: 760px;
@@ -124,41 +155,44 @@ h1, h2, h3, h4, h5 {
     position: relative;
     margin-bottom: 34px;
     padding: 22px 18px 18px;
-    background: var(--paper);
+    background: var(--panel);
     border: var(--borders);
     border-radius: var(--curve);
-    box-shadow: 0 6px 14px rgba(60, 40, 10, 0.18);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
 
 .content .input,
 .content .select select {
-    background: transparent !important;
-    border: 2px solid var(--text) !important;
+    background: var(--panel-deep) !important;
+    border: 1px solid var(--cream) !important;
     border-radius: var(--curve) !important;
-    color: var(--text) !important;
-    font-family: var(--font-cute) !important;
+    color: var(--ink) !important;
+    font-family: var(--font-vhs) !important;
+    font-size: 18px !important;
     box-shadow: none !important;
 }
 
-.content .input::placeholder { color: rgba(36, 31, 24, 0.45); }
+.content .input::placeholder { color: rgba(226, 221, 197, 0.45); }
 
 .content .button.is-info {
-    background: transparent !important;
-    border: 2px solid var(--text) !important;
+    background: var(--panel-deep) !important;
+    border: 1px solid var(--cream) !important;
     border-radius: var(--curve) !important;
-    color: var(--text) !important;
-    font-family: var(--font-cute) !important;
+    color: var(--link) !important;
+    font-family: var(--font-pixel) !important;
     text-transform: lowercase;
     box-shadow: none !important;
+    transition: all 0.3s ease;
 }
 
 .content .button.is-info:hover {
-    background: rgba(0, 0, 0, 0.06) !important;
-    color: var(--hover) !important;
+    background: rgba(207, 177, 221, 0.25) !important;
+    color: var(--link-hover) !important;
+    box-shadow: 0 0 12px rgba(207, 177, 221, 0.5) !important;
 }
 
 /* ============================================================
-   Each list:  taped label (h1) + pinned paper sheet (ul)
+   Each list:  taped label (h1) + pinned panel (ul)
    ============================================================ */
 .content h1,
 .content ul {
@@ -170,72 +204,77 @@ h1, h2, h3, h4, h5 {
     width: fit-content;
     margin: 0 auto 30px;
     padding: 6px 30px 4px;
-    background: var(--paper);
+    background: var(--panel);
     border: var(--borders);
     border-radius: var(--curve);
-    font-size: 32px;
+    font-size: 34px;
     line-height: 1.1;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(60, 40, 10, 0.16);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .content ul {
     list-style: none;
     margin: 0 0 40px;
     padding: 26px 20px 18px;
-    background: var(--paper);
+    background: var(--panel);
     border: var(--borders);
     border-radius: var(--curve);
-    box-shadow: 0 8px 18px rgba(60, 40, 10, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
 }
 
 /* --- item rows --- */
 .content ul li.box {
-    background: transparent !important;
+    background: var(--panel-deep) !important;
     border: none !important;
-    border-bottom: 2px dotted rgba(90, 70, 30, 0.28) !important;
-    border-radius: 0 !important;
+    border-bottom: 1px solid rgba(226, 221, 197, 0.25) !important;
+    border-radius: var(--curve) !important;
     box-shadow: none !important;
     padding: 10px 12px !important;
-    color: var(--text) !important;
-    font-family: var(--font-hand) !important;
+    color: var(--ink) !important;
+    font-family: var(--font-vhs) !important;
     font-size: 22px;
     display: flex;
     align-items: center;
     gap: 8px;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.content ul li.box:hover {
+    box-shadow: 0 0 10px rgba(207, 177, 221, 0.35) !important;
 }
 
 .content ul li.box:last-child { border-bottom: none !important; }
 
-/* keep the importance tints, but softened onto the paper */
-.content ul li.box.has-background-danger-light  { background: rgba(243, 121, 113, 0.16) !important; }
-.content ul li.box.has-background-warning-light { background: rgba(251, 231, 128, 0.20) !important; }
-.content ul li.box.has-background-success-light { background: rgba(141, 223, 171, 0.18) !important; }
+/* importance tints, kept legible on the dark panel */
+.content ul li.box.has-background-danger-light  { background: rgba(209, 139, 155, 0.22) !important; }
+.content ul li.box.has-background-warning-light { background: rgba(201, 185, 145, 0.20) !important; }
+.content ul li.box.has-background-success-light { background: rgba(127, 166, 255, 0.16) !important; }
 
 .content ul li.box .tag {
-    font-family: var(--font-label) !important;
+    font-family: var(--font-pixel) !important;
     letter-spacing: 1px;
     border-radius: var(--curve);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .content ul li.box input[type="checkbox"] {
     margin-left: auto;
     width: 18px;
     height: 18px;
-    accent-color: #7d5224;
+    accent-color: #c2a9eb;
     cursor: pointer;
 }
 
-/* --- scrollbar: hand-drawn feel --- */
-::-webkit-scrollbar { width: 6px; height: 10px; }
+/* --- scrollbar --- */
+::-webkit-scrollbar { width: 8px; height: 10px; }
 ::-webkit-scrollbar-track {
-    border-radius: var(--curve);
-    border: 1px solid rgba(0, 0, 0, 0.25);
+    background: var(--panel-deep);
+    border: 1px solid var(--cream);
 }
 ::-webkit-scrollbar-thumb {
-    background: #fff;
-    border-radius: var(--curve);
+    background: #8a7ba8;
+    border-radius: 0;
 }
-::-webkit-scrollbar-thumb:hover { background: #fff; }
+::-webkit-scrollbar-thumb:hover { background: var(--tint); }
