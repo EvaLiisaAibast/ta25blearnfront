@@ -32,15 +32,45 @@ function add(){
 let allItems = computed(() => sortByImportance(items.value));
 let doneItems = computed(() => sortByImportance(items.value.filter(item => item.isDone)));
 let toDoItems = computed(() => sortByImportance(items.value.filter(item => !item.isDone)));
+
+// Täidetuse protsent paremasse "kuu" dialõõssi.
+let pct = computed(() =>
+  items.value.length ? Math.round(doneItems.value.length / items.value.length * 100) : 0,
+);
+
+let today = new Date().toLocaleDateString('et-EE', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+});
 </script>
 
 <template>
-    <div class="container content mt-2">
-        <div class="field has-addons">
-            <div class="control is-expanded">
-                <input @keydown.enter="add" v-model="message" class="input" type="text" placeholder="Add item">
+    <main class="card">
+        <div class="band"><div class="rule"><div class="vellum">
+            <span class="rosette a"></span><span class="rosette b"></span>
+            <span class="rosette c"></span><span class="rosette d"></span>
+
+            <div class="flourish"><i></i></div>
+            <div class="ribbon"><h1>Register of Duties</h1></div>
+            <p class="date">{{ today }}</p>
+
+            <div class="grid">
+                <div class="margin-l"><span>Memento · Agenda</span></div>
+
+                <div>
+                    <ItemList :items="allItems" title="All items"></ItemList>
+                    <ItemList :items="doneItems" title="Done items"></ItemList>
+                    <ItemList :items="toDoItems" title="ToDo items"></ItemList>
+                </div>
+
+                <aside class="margin-r">
+                    <div class="dial" :style="{ '--pct': pct }"><b>{{ pct }}</b></div>
+                    <small>duties<br>fulfilled</small>
+                    <div class="fleuron"></div>
+                </aside>
             </div>
-            <div class="control">
+
+            <form class="inscribe" @submit.prevent="add">
+                <input v-model="message" placeholder="Add item" aria-label="Add item" autocomplete="off">
                 <div class="select">
                     <select v-model="importance" aria-label="Olulisus">
                         <option v-for="(info, key) in IMPORTANCE" :key="key" :value="key">
@@ -48,18 +78,12 @@ let toDoItems = computed(() => sortByImportance(items.value.filter(item => !item
                         </option>
                     </select>
                 </div>
-            </div>
-            <div class="control">
-                <button @click="add" class="button is-info">
-                    Add
-                </button>
-            </div>
-        </div>
+                <button type="submit">Add</button>
+            </form>
 
-        <ItemList :items="allItems" title="All items"></ItemList>
-        <ItemList :items="doneItems" title="Done items"></ItemList>
-        <ItemList :items="toDoItems" title="ToDo items"></ItemList>
-    </div>
+            <p class="colophon">Penned with care &amp; sealed in wax</p>
+        </div></div></div>
+    </main>
 </template>
 
 <style></style>

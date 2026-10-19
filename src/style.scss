@@ -1,280 +1,333 @@
 @use "bulma/sass" with (
-    $primary: #c2a9eb,
+    $primary: #7b1e26,
 );
 
 /* ============================================================
-   Theme adapted from peachyvoid.com (a Neocities-style site).
-   Their look leans on their own images (lace PNGs, wallpaper
-   JPG, cursor art), so none of that is copied or hotlinked --
-   the same feel is rebuilt with CSS gradients + borders.
-   Palette and type sampled from their stylesheet:
-     panels #2b1d12 / #352b20, cream border #e2ddc5,
-     lavender link #c2a9eb, pink hover #ffb3d9,
-     VT323 (VHS) + pixel font.
-   Custom .tape / .pin are kept from the MvcMovie port.
+   "A Register of Duties" -- an illuminated-manuscript theme.
+   Tokens, frames, rosettes, wax seals and the progress dial are
+   ported from the user's own hand-written page. No external
+   images: every ornament is CSS (gradients, masks, clip-paths).
+   Bulma stays imported so the importance tags keep using
+   is-danger / is-warning / is-success with :class.
    ============================================================ */
 
+/* ===================== TOKENS ===================== */
 :root {
-    --wall: #352b20;
-    --panel: #2b1d12;
-    --panel-deep: #21170f;
-    --ink: #ffffff;
-    --cream: #e2ddc5;
-    --link: #c2a9eb;
-    --link-hover: #ffb3d9;
-    --tint: #cfb1dd;
-    --borders: 6px double #e2ddc5;
-    --curve: 2px;
-    --font-vhs: 'VT323', 'Courier New', monospace;
-    --font-pixel: 'Jersey 10', 'PixelFont', monospace;
-    --font-body: 'Texturina', Verdana, Geneva, Tahoma, sans-serif;
-    --font-display: 'NewRocker', Georgia, serif;
+    --card-width: min(95vw, 560px);
+    --font-display: "UnifrakturCook", "Old English Text MT", serif;
+    --font-text: "IM Fell English", Georgia, serif;
+    --font-small: "Cormorant Garamond", Georgia, serif;
+    --task-size: 5.2cqw;
+
+    --vellum: #f3e6c8;  --vellum-dk: #e3cf9f;
+    --ink: #2b1a14;
+    --oxblood: #7b1e26; --oxblood-dk: #4a0f16;
+    --gilt: #c9983a;    --gilt-lt: #f0d589; --gilt-dk: #8d6420;
+    --lapis: #27447a;   --leaf: #4f6b3a;
 }
 
-/* --- Wall: dark warm brown with a soft glow, fixed --- */
+/* ===================== PAGE: damask lattice ===================== */
+* { box-sizing: border-box; margin: 0; }
+
 body {
-    background-color: var(--wall);
-    background-image:
-        radial-gradient(circle at 20% 8%, rgba(194, 169, 235, 0.12), transparent 40%),
-        radial-gradient(circle at 82% 92%, rgba(255, 179, 217, 0.08), transparent 44%),
-        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.015) 0 3px, transparent 3px 6px);
-    background-attachment: fixed;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem 0;
+    font-family: var(--font-text);
     color: var(--ink);
-    font-family: var(--font-body);
-    letter-spacing: 1px;
-    text-shadow: 0px 0px 1px #bbb;
-}
-
-/* --- Lace trim along the top, pure CSS scallop --- */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 14px;
-    z-index: 9999;
-    pointer-events: none;
     background:
-        radial-gradient(circle at 10px -3px, transparent 9px, var(--cream) 9px, var(--cream) 11px, transparent 11px) repeat-x;
-    background-size: 20px 14px;
-    opacity: 0.85;
+        radial-gradient(circle at 50% 50%, var(--gilt) 0 1.5px, transparent 2px) 0 0/36px 36px,
+        linear-gradient(45deg, #ffffff0d 25%, transparent 25% 75%, #ffffff0d 75%) 0 0/36px 36px,
+        linear-gradient(45deg, #ffffff0d 25%, transparent 25% 75%, #ffffff0d 75%) 18px 18px/36px 36px,
+        radial-gradient(ellipse at 50% 0, #8c2530, var(--oxblood-dk) 75%);
+    background-attachment: fixed;
 }
 
-/* --- Typography --- */
-h1, h2, h3, h4, h5 {
-    color: var(--cream) !important;
-    font-family: var(--font-display) !important;
-    text-transform: lowercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 8px rgba(194, 169, 235, 0.5), 2px 2px 2px #000;
+/* ===================== CARD: 3 nested frames ===================== */
+.card {
+    container-type: inline-size;
+    width: var(--card-width);
+    position: relative;
+    filter: drop-shadow(0 3cqw 4cqw #0009);
+}
+/* 1: gilt chain-link band */
+.band {
+    padding: 3.4cqw;
+    border-radius: 2cqw;
+    background:
+        radial-gradient(circle, transparent 38%, var(--gilt-lt) 40% 46%, var(--gilt-dk) 48% 52%, transparent 54%) 0 0/3.4cqw 3.4cqw,
+        linear-gradient(135deg, var(--gilt), var(--gilt-dk));
+}
+/* 2: lapis + gilt double rule */
+.rule {
+    padding: 1cqw;
+    background: var(--lapis);
+    border-radius: 1cqw;
+    box-shadow: inset 0 0 0 .4cqw var(--gilt-lt), inset 0 0 0 .8cqw var(--lapis), inset 0 0 0 1cqw var(--gilt);
+}
+/* 3: vellum with foxing + ruled margin lines */
+.vellum {
+    position: relative;
+    padding: 7cqw 5cqw 5cqw;
+    border-radius: .6cqw;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 12% 18%, #b9863a22 0 6cqw, transparent 14cqw),
+        radial-gradient(circle at 90% 85%, #8a5a2a2a 0 8cqw, transparent 18cqw),
+        linear-gradient(90deg, transparent 15.5cqw, #7b1e2655 15.5cqw 15.8cqw, transparent 15.8cqw calc(100% - 15.8cqw), #7b1e2655 calc(100% - 15.8cqw) calc(100% - 15.5cqw), transparent 0),
+        var(--vellum);
 }
 
-a {
-    color: var(--link) !important;
-    text-decoration: none;
-}
-
-a:hover { color: var(--link-hover) !important; }
-
-/* ============================================================
-   Custom-rendered washi TAPE  (from MvcMovie), recolored
-   ============================================================ */
-.tape {
+/* corner rosettes */
+.rosette {
     position: absolute;
-    top: -11px;
-    left: 50%;
-    width: 96px;
-    height: 24px;
-    transform: translateX(-50%) rotate(-2deg);
-    background: linear-gradient(180deg, rgba(207, 177, 221, 0.9), rgba(160, 130, 190, 0.82));
-    opacity: 0.92;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
-    z-index: 3;
-    pointer-events: none;
-}
-
-.tape::before,
-.tape::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: rgba(255, 255, 255, 0.45);
-}
-
-.tape::before { left: 4px; }
-.tape::after  { right: 4px; }
-
-.tape-b { transform: translateX(-50%) rotate(2.4deg); }
-
-/* ============================================================
-   Custom-rendered brass THUMBTACK / pin  (from MvcMovie)
-   ============================================================ */
-.pin {
-    position: absolute;
-    top: -10px;
-    width: 22px;
-    height: 22px;
+    width: 17cqw;
+    aspect-ratio: 1;
+    z-index: 2;
     border-radius: 50%;
-    z-index: 6;
-    pointer-events: none;
-    background: radial-gradient(circle at 32% 28%, #fff7e2 0 5%, #f0d9a8 14%, #c9a05e 34%, #7d5224 62%, #331c07 100%);
-    box-shadow:
-        inset 0 -2px 3px rgba(0, 0, 0, 0.5),
-        inset 0 2px 2px rgba(255, 255, 255, 0.7),
-        0 3px 5px rgba(0, 0, 0, 0.55);
+    background:
+        radial-gradient(circle, var(--oxblood) 0 9%, var(--gilt-lt) 10% 15%, transparent 16%),
+        repeating-conic-gradient(from 0deg, var(--lapis) 0 11.25deg, var(--gilt) 11.25deg 22.5deg),
+        var(--gilt);
+    -webkit-mask: radial-gradient(circle, #000 0 62%, transparent 63% 70%, #000 71% 76%, transparent 77%);
+            mask: radial-gradient(circle, #000 0 62%, transparent 63% 70%, #000 71% 76%, transparent 77%);
+}
+.rosette.a { top: -5cqw; left: -5cqw; }
+.rosette.b { top: -5cqw; right: -5cqw; }
+.rosette.c { bottom: -5cqw; left: -5cqw; }
+.rosette.d { bottom: -5cqw; right: -5cqw; }
+
+/* ===================== HEADER ===================== */
+.flourish { display: flex; align-items: center; gap: 2cqw; margin-bottom: 2.4cqw; }
+.flourish::before, .flourish::after {
+    content: "";
+    flex: 1;
+    height: 1.2cqw;
+    background: linear-gradient(var(--oxblood), var(--oxblood)) 0 20%/100% 1px no-repeat,
+                linear-gradient(var(--gilt-dk), var(--gilt-dk)) 0 80%/100% 1px no-repeat,
+                radial-gradient(circle, var(--leaf) 0 .35cqw, transparent .4cqw) 0 50%/2.4cqw 100% repeat-x;
+}
+.flourish i {
+    width: 2.2cqw;
+    aspect-ratio: 1;
+    background: var(--oxblood);
+    transform: rotate(45deg);
+    box-shadow: -3.4cqw 0 0 -.5cqw var(--gilt), 3.4cqw 0 0 -.5cqw var(--gilt),
+                -6.4cqw 0 0 -.9cqw var(--lapis), 6.4cqw 0 0 -.9cqw var(--lapis);
 }
 
-/* the needle sticking out under the head */
-.pin::after {
+.ribbon {
+    position: relative;
+    text-align: center;
+    color: var(--gilt-lt);
+    padding: 2.2cqw 8cqw 2.6cqw;
+    margin: 0 4cqw;
+    background: linear-gradient(var(--oxblood), var(--oxblood-dk));
+    clip-path: polygon(0 0, 100% 0, 96% 50%, 100% 100%, 0 100%, 4% 50%);
+}
+.ribbon::after { content: ""; position: absolute; inset: 1cqw 7cqw; border: 1px solid var(--gilt); pointer-events: none; }
+.ribbon h1 { font: 700 11cqw/1 var(--font-display); text-shadow: 0 .3cqw 0 #000a; }
+.date { text-align: center; font: italic 3.6cqw var(--font-small); letter-spacing: .08em; margin: 2.4cqw 0 4cqw; color: var(--oxblood); }
+
+/* ===================== BODY: margin | list | margin ===================== */
+/* middle column is flexible (minmax(0,1fr)) so the three cqw-sized
+   side columns can never push the row wider than the vellum. */
+.grid { display: grid; grid-template-columns: 7cqw minmax(0, 1fr) 15cqw; gap: 3cqw; }
+.margin-l { display: flex; justify-content: center; gap: 1.4cqw; }
+.margin-l span {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font: 700 3.3cqw var(--font-small);
+    letter-spacing: .45em;
+    text-transform: uppercase;
+    color: var(--gilt-dk);
+    white-space: nowrap;
+}
+.margin-l::after {
+    content: "";
+    width: 1.6cqw;
+    background: repeating-linear-gradient(var(--gilt-dk) 0 1px, transparent 1px 2cqw),
+                repeating-linear-gradient(var(--gilt-dk) 0 1px, transparent 1px 10cqw);
+    background-size: 50% 100%, 100% 100%;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+/* progress "moon" dial in right margin */
+.margin-r { display: flex; flex-direction: column; align-items: center; gap: 2cqw; padding-top: 3cqw; }
+.dial {
+    --pct: 0;
+    width: 14cqw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: conic-gradient(var(--oxblood) calc(var(--pct) * 1%), #7b1e2622 0);
+    box-shadow: 0 0 0 .6cqw var(--gilt), 0 0 0 1.1cqw var(--vellum), 0 0 0 1.4cqw var(--gilt-dk);
+}
+.dial b {
+    width: 76%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--vellum);
+    display: grid;
+    place-items: center;
+    font: 700 4.6cqw var(--font-display);
+    color: var(--oxblood);
+}
+.margin-r small { font: italic 3.2cqw/1.2 var(--font-small); text-align: center; color: var(--gilt-dk); }
+.margin-r .fleuron {
+    width: 100%;
+    aspect-ratio: 1;
+    margin-top: 2cqw;
+    opacity: .6;
+    background: radial-gradient(circle, var(--lapis) 0 8%, transparent 9%),
+                repeating-conic-gradient(var(--gilt-dk) 0 4deg, transparent 4deg 30deg);
+    -webkit-mask: radial-gradient(circle, #000 0 70%, transparent 71%);
+            mask: radial-gradient(circle, #000 0 70%, transparent 71%);
+}
+
+/* ===================== REGISTERS (the three lists) ===================== */
+.register { margin-bottom: 4cqw; }
+.register .ribbon { padding: 1.4cqw 6cqw 1.8cqw; }
+.register .ribbon h2 { font: 700 7cqw/1 var(--font-display); text-shadow: 0 .2cqw 0 #000a; }
+
+ol { list-style: none; padding: 0; counter-reset: n; }
+li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 5.5cqw 1fr 9cqw;
+    align-items: center;
+    gap: 2.2cqw;
+    padding: 2.8cqw 0 3.8cqw;
+    counter-increment: n;
+}
+li::before { content: counter(n, upper-roman); font: 700 3cqw var(--font-small); color: var(--lapis); text-align: right; }
+/* illuminated vine divider */
+li::after {
     content: "";
     position: absolute;
-    left: 50%;
-    top: 100%;
-    width: 3px;
-    height: 9px;
-    margin-left: -1.5px;
-    background: linear-gradient(180deg, #9a8b78 0%, #5b5244 45%, #241f18 100%);
-    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.45);
+    left: 0; right: 0; bottom: 0;
+    height: 1.8cqw;
+    background: radial-gradient(circle, var(--oxblood) 0 .5cqw, transparent .55cqw) 50% 50%/1.8cqw 1.8cqw no-repeat,
+                radial-gradient(ellipse 1cqw .45cqw at 0 50%, var(--leaf) 90%, transparent) 0 50%/3cqw 100% repeat-x;
+    opacity: .75;
+    -webkit-mask: linear-gradient(90deg, transparent, #000 12% 88%, transparent);
+            mask: linear-gradient(90deg, transparent, #000 12% 88%, transparent);
 }
+li:last-child::after { display: none; }
 
-.pin-l { left: 26px; }
-.pin-r { right: 26px; left: auto; }
-
-/* ============================================================
-   Container + the "add item" panel
-   ============================================================ */
-.container.content {
-    max-width: 760px;
-    padding: 40px 24px 64px;
+/* text + importance tag share the middle track (your original 3-track row) */
+.body { display: flex; flex-wrap: wrap; align-items: baseline; gap: .35em .7em; }
+.text { flex: 1 1 auto; min-width: 0; font-size: var(--task-size); line-height: 1.2; overflow-wrap: anywhere; }
+.text::first-letter {
+    float: left;
+    font: 700 2.7em/.82 var(--font-display);
+    color: var(--oxblood);
+    padding: .08em .1em .02em;
+    margin: .04em .12em 0 0;
+    background: linear-gradient(135deg, var(--gilt-lt), var(--gilt));
+    box-shadow: 0 0 0 1px var(--oxblood), inset 0 0 0 2px var(--vellum);
 }
+li.done .text { opacity: .5; text-decoration: line-through; text-decoration-color: var(--oxblood); }
+li.empty { display: block; padding: 6cqw 0; text-align: center; font: italic 5cqw var(--font-text); color: var(--oxblood); }
+li.empty::before, li.empty::after { content: none; }
 
-.content .field.has-addons {
+/* ---- importance tags: keep Bulma is-danger/warning/success classes ---- */
+.tag {
+    flex: 0 0 auto;
+    font-family: var(--font-small) !important;
+    font-weight: 700;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: .2em .7em;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px var(--gilt-dk), inset 0 0 0 1px #ffffff33;
+}
+.tag.is-danger   { background: var(--oxblood) !important; color: var(--gilt-lt) !important; }
+.tag.is-warning  { background: var(--gilt) !important;     color: var(--oxblood-dk) !important; }
+.tag.is-success  { background: var(--leaf) !important;     color: var(--vellum) !important; }
+.tag.is-light    { background: var(--vellum-dk) !important; color: var(--ink) !important; }
+
+/* row tint by importance (keeps the Bulma rowClass hooks).
+   Bulma sets background-color with !important, so ours must match it --
+   muted to sit on the vellum instead of Bulma's stock pink/mint. */
+li.has-background-danger-light  {
+    background-color: #ecc8c1 !important;
+    background-image: linear-gradient(90deg, #7b1e2633, transparent 72%) !important;
+}
+li.has-background-warning-light {
+    background-color: #eddf9c !important;
+    background-image: linear-gradient(90deg, #c9983a33, transparent 72%) !important;
+}
+li.has-background-success-light {
+    background-color: #cddcc0 !important;
+    background-image: linear-gradient(90deg, #4f6b3a33, transparent 72%) !important;
+}
+li.has-text-danger-dark, li.has-text-warning-dark, li.has-text-success-dark { color: var(--ink) !important; }
+
+/* wax-seal checkbox */
+.seal {
     position: relative;
-    margin-bottom: 34px;
-    padding: 22px 18px 18px;
-    background: var(--panel);
-    border: var(--borders);
-    border-radius: var(--curve);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
-}
-
-.content .input,
-.content .select select {
-    background: var(--panel-deep) !important;
-    border: 1px solid var(--cream) !important;
-    border-radius: var(--curve) !important;
-    color: var(--ink) !important;
-    font-family: var(--font-vhs) !important;
-    font-size: 18px !important;
-    box-shadow: none !important;
-}
-
-.content .input::placeholder { color: rgba(226, 221, 197, 0.45); }
-
-.content .button.is-info {
-    background: var(--panel-deep) !important;
-    border: 1px solid var(--cream) !important;
-    border-radius: var(--curve) !important;
-    color: var(--link) !important;
-    font-family: var(--font-pixel) !important;
-    text-transform: lowercase;
-    box-shadow: none !important;
-    transition: all 0.3s ease;
-}
-
-.content .button.is-info:hover {
-    background: rgba(207, 177, 221, 0.25) !important;
-    color: var(--link-hover) !important;
-    box-shadow: 0 0 12px rgba(207, 177, 221, 0.5) !important;
-}
-
-/* ============================================================
-   Each list:  taped label (h1) + pinned panel (ul)
-   ============================================================ */
-.content h1,
-.content ul {
-    position: relative;
-}
-
-.content h1 {
-    position: relative;
-    width: fit-content;
-    margin: 0 auto 30px;
-    padding: 6px 30px 4px;
-    background: var(--panel);
-    border: var(--borders);
-    border-radius: var(--curve);
-    font-size: 34px;
-    line-height: 1.1;
-    letter-spacing: 3px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-}
-
-.content ul {
-    list-style: none;
-    margin: 0 0 40px;
-    padding: 26px 20px 18px;
-    background: var(--panel);
-    border: var(--borders);
-    border-radius: var(--curve);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
-}
-
-/* --- item rows --- */
-.content ul li.box {
-    background: var(--panel-deep) !important;
-    border: none !important;
-    border-bottom: 1px solid rgba(226, 221, 197, 0.25) !important;
-    border-radius: var(--curve) !important;
-    box-shadow: none !important;
-    padding: 10px 12px !important;
-    color: var(--ink) !important;
-    font-family: var(--font-vhs) !important;
-    font-size: 22px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: background 0.25s ease, box-shadow 0.25s ease;
-}
-
-.content ul li.box:hover {
-    box-shadow: 0 0 10px rgba(207, 177, 221, 0.35) !important;
-}
-
-.content ul li.box:last-child { border-bottom: none !important; }
-
-/* importance tints, kept legible on the dark panel */
-.content ul li.box.has-background-danger-light  { background: rgba(209, 139, 155, 0.22) !important; }
-.content ul li.box.has-background-warning-light { background: rgba(201, 185, 145, 0.20) !important; }
-.content ul li.box.has-background-success-light { background: rgba(127, 166, 255, 0.16) !important; }
-
-.content ul li.box .tag {
-    font-family: var(--font-pixel) !important;
-    letter-spacing: 1px;
-    border-radius: var(--curve);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-}
-
-.content ul li.box input[type="checkbox"] {
-    margin-left: auto;
-    width: 18px;
-    height: 18px;
-    accent-color: #c2a9eb;
+    width: 8.4cqw;
+    aspect-ratio: 1;
+    border-radius: 50%;
     cursor: pointer;
+    border: 1.5px dashed var(--gilt-dk);
+    display: grid;
+    place-items: center;
+    transition: transform .25s cubic-bezier(.3, 1.6, .5, 1);
 }
+.seal input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.seal:focus-within { outline: 2px solid var(--lapis); outline-offset: 2px; }
+li.done .seal {
+    border: 0;
+    transform: rotate(-8deg) scale(1.05);
+    background: radial-gradient(circle at 35% 30%, #d4545c, var(--oxblood) 55%, var(--oxblood-dk));
+    box-shadow: 0 .5cqw .8cqw #0006, inset 0 0 0 1cqw #0003, inset 0 0 0 1.2cqw #ffffff22;
+    clip-path: polygon(50% 0, 60% 6%, 72% 3%, 78% 13%, 90% 16%, 92% 28%, 100% 38%, 96% 50%, 100% 62%, 92% 72%, 90% 84%, 78% 87%, 72% 97%, 60% 94%, 50% 100%, 40% 94%, 28% 97%, 22% 87%, 10% 84%, 8% 72%, 0 62%, 4% 50%, 0 38%, 8% 28%, 10% 16%, 22% 13%, 28% 3%, 40% 6%);
+}
+li.done .seal::after { content: "\2713"; color: var(--gilt-lt); font: 700 4.8cqw var(--font-display); text-shadow: 0 -1px 0 #0008; }
 
-/* --- scrollbar --- */
-::-webkit-scrollbar { width: 8px; height: 10px; }
-::-webkit-scrollbar-track {
-    background: var(--panel-deep);
-    border: 1px solid var(--cream);
+/* ===================== INSCRIBE FORM + COLOPHON ===================== */
+.inscribe { display: flex; gap: 3cqw; align-items: flex-end; margin-top: 4cqw; padding: 3cqw 0 0; border-top: 1px solid var(--oxblood); box-shadow: 0 -.6cqw 0 -.3cqw var(--gilt); }
+.inscribe input, .inscribe .select select {
+    flex: 1;
+    min-width: 0;
+    background: none !important;
+    border: 0;
+    border-bottom: 1px solid var(--gilt-dk) !important;
+    border-radius: 0 !important;
+    font: italic var(--task-size) var(--font-text) !important;
+    color: var(--ink) !important;
+    padding: .5cqw 1cqw !important;
+    outline: none;
+    box-shadow: none !important;
 }
-::-webkit-scrollbar-thumb {
-    background: #8a7ba8;
-    border-radius: 0;
+.inscribe .select select { flex: 0 0 auto; }
+.inscribe input:focus-visible, .inscribe .select select:focus-visible { border-color: var(--oxblood) !important; box-shadow: 0 1px 0 var(--oxblood) !important; }
+.inscribe input::placeholder { color: #7b1e2688; }
+.inscribe button {
+    cursor: pointer;
+    border: 0;
+    color: var(--gilt-lt);
+    font: 700 4.4cqw var(--font-display);
+    padding: 1.6cqw 5cqw;
+    border-radius: 99px;
+    background: linear-gradient(var(--oxblood), var(--oxblood-dk));
+    box-shadow: inset 0 0 0 1px var(--gilt), 0 .4cqw .6cqw #0005;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--tint); }
+.inscribe button:focus-visible { outline: 2px solid var(--lapis); outline-offset: 2px; }
+.colophon { margin-top: 4cqw; text-align: center; font: italic 3.2cqw var(--font-small); color: var(--gilt-dk); letter-spacing: .06em; }
+
+/* ===================== responsive + misc ===================== */
+@media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; }
+    .margin-l { display: none; }
+    .margin-r { flex-direction: row; justify-content: center; padding-top: 0; }
+    .margin-r .fleuron { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media print { body { background: none; } .inscribe { display: none; } .card { filter: none; } }
