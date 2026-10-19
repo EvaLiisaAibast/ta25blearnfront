@@ -1,3 +1,241 @@
 @use "bulma/sass" with (
     $primary: coral,
 );
+
+/* ============================================================
+   Theme adapted from the SpaceHey paper/corkboard layout
+   (originally by TRaGiiCTaYY). SpaceHey-only selectors were
+   dropped; the cream + paper + handwriting look is kept and
+   mapped onto the elements this Vue app actually renders.
+   Custom .tape / .pin are pure-CSS, ported from the MvcMovie
+   project. No external images -- texture is CSS gradients.
+   ============================================================ */
+
+:root {
+    --headers: #1c1712;
+    --text: #241f18;
+    --links: #6b4f2a;
+    --hover: #a86b2c;
+    --borders: 4px solid #faf5f2;
+    --paper: #faf5f2;
+    --wall: #f4e7b0;
+    --curve: 8px;
+    --font-hand: 'Kristi', 'Reenie Beanie', cursive;
+    --font-cute: 'Hachi Maru Pop', 'East Sea Dokdo', cursive;
+    --font-label: 'East Sea Dokdo', cursive;
+}
+
+/* --- Wall / background: warm cream with a soft paper grain --- */
+body {
+    background-color: var(--wall);
+    background-image:
+        radial-gradient(circle at 22% 12%, rgba(255, 255, 255, 0.35), transparent 42%),
+        radial-gradient(circle at 78% 88%, rgba(120, 90, 40, 0.10), transparent 46%),
+        repeating-linear-gradient(0deg, rgba(90, 70, 30, 0.02) 0 2px, transparent 2px 4px),
+        repeating-linear-gradient(90deg, rgba(90, 70, 30, 0.02) 0 2px, transparent 2px 4px);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: var(--font-hand);
+}
+
+/* --- Typography --- */
+h1, h2, h3, h4, h5 {
+    color: var(--headers) !important;
+    font-family: var(--font-hand) !important;
+    text-transform: lowercase;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* ============================================================
+   Custom-rendered washi TAPE  (from MvcMovie)
+   ============================================================ */
+.tape {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    width: 96px;
+    height: 24px;
+    transform: translateX(-50%) rotate(-2deg);
+    background: linear-gradient(180deg, rgba(226, 205, 150, 0.92), rgba(200, 174, 115, 0.85));
+    opacity: 0.95;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.28);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.tape::before,
+.tape::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255, 250, 235, 0.6);
+}
+
+.tape::before { left: 4px; }
+.tape::after  { right: 4px; }
+
+.tape-b { transform: translateX(-50%) rotate(2.4deg); }
+
+/* ============================================================
+   Custom-rendered brass THUMBTACK / pin  (from MvcMovie)
+   ============================================================ */
+.pin {
+    position: absolute;
+    top: -10px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    z-index: 6;
+    pointer-events: none;
+    background: radial-gradient(circle at 32% 28%, #fff7e2 0 5%, #f0d9a8 14%, #c9a05e 34%, #7d5224 62%, #331c07 100%);
+    box-shadow:
+        inset 0 -2px 3px rgba(0, 0, 0, 0.5),
+        inset 0 2px 2px rgba(255, 255, 255, 0.7),
+        0 3px 5px rgba(0, 0, 0, 0.55);
+}
+
+/* the needle sticking out under the head */
+.pin::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    width: 3px;
+    height: 9px;
+    margin-left: -1.5px;
+    background: linear-gradient(180deg, #9a8b78 0%, #5b5244 45%, #241f18 100%);
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.45);
+}
+
+.pin-l { left: 26px; }
+.pin-r { right: 26px; left: auto; }
+
+/* ============================================================
+   Container + the "add item" toolbar
+   ============================================================ */
+.container.content {
+    max-width: 760px;
+    padding: 40px 24px 64px;
+}
+
+.content .field.has-addons {
+    position: relative;
+    margin-bottom: 34px;
+    padding: 22px 18px 18px;
+    background: var(--paper);
+    border: var(--borders);
+    border-radius: var(--curve);
+    box-shadow: 0 6px 14px rgba(60, 40, 10, 0.18);
+}
+
+.content .input,
+.content .select select {
+    background: transparent !important;
+    border: 2px solid var(--text) !important;
+    border-radius: var(--curve) !important;
+    color: var(--text) !important;
+    font-family: var(--font-cute) !important;
+    box-shadow: none !important;
+}
+
+.content .input::placeholder { color: rgba(36, 31, 24, 0.45); }
+
+.content .button.is-info {
+    background: transparent !important;
+    border: 2px solid var(--text) !important;
+    border-radius: var(--curve) !important;
+    color: var(--text) !important;
+    font-family: var(--font-cute) !important;
+    text-transform: lowercase;
+    box-shadow: none !important;
+}
+
+.content .button.is-info:hover {
+    background: rgba(0, 0, 0, 0.06) !important;
+    color: var(--hover) !important;
+}
+
+/* ============================================================
+   Each list:  taped label (h1) + pinned paper sheet (ul)
+   ============================================================ */
+.content h1,
+.content ul {
+    position: relative;
+}
+
+.content h1 {
+    position: relative;
+    width: fit-content;
+    margin: 0 auto 30px;
+    padding: 6px 30px 4px;
+    background: var(--paper);
+    border: var(--borders);
+    border-radius: var(--curve);
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: 2px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(60, 40, 10, 0.16);
+}
+
+.content ul {
+    list-style: none;
+    margin: 0 0 40px;
+    padding: 26px 20px 18px;
+    background: var(--paper);
+    border: var(--borders);
+    border-radius: var(--curve);
+    box-shadow: 0 8px 18px rgba(60, 40, 10, 0.2);
+}
+
+/* --- item rows --- */
+.content ul li.box {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 2px dotted rgba(90, 70, 30, 0.28) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 10px 12px !important;
+    color: var(--text) !important;
+    font-family: var(--font-hand) !important;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.content ul li.box:last-child { border-bottom: none !important; }
+
+/* keep the importance tints, but softened onto the paper */
+.content ul li.box.has-background-danger-light  { background: rgba(243, 121, 113, 0.16) !important; }
+.content ul li.box.has-background-warning-light { background: rgba(251, 231, 128, 0.20) !important; }
+.content ul li.box.has-background-success-light { background: rgba(141, 223, 171, 0.18) !important; }
+
+.content ul li.box .tag {
+    font-family: var(--font-label) !important;
+    letter-spacing: 1px;
+    border-radius: var(--curve);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.content ul li.box input[type="checkbox"] {
+    margin-left: auto;
+    width: 18px;
+    height: 18px;
+    accent-color: #7d5224;
+    cursor: pointer;
+}
+
+/* --- scrollbar: hand-drawn feel --- */
+::-webkit-scrollbar { width: 6px; height: 10px; }
+::-webkit-scrollbar-track {
+    border-radius: var(--curve);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}
+::-webkit-scrollbar-thumb {
+    background: #fff;
+    border-radius: var(--curve);
+}
+::-webkit-scrollbar-thumb:hover { background: #fff; }

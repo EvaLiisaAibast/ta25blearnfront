@@ -8,8 +8,13 @@ function info(item) {
 }
 </script>
 <template>
-    <h1>{{ title }}</h1>
+    <h1>
+        <span class="tape" aria-hidden="true"></span>
+        {{ title }}
+    </h1>
     <ul>
+        <span class="pin pin-l" aria-hidden="true"></span>
+        <span class="pin pin-r" aria-hidden="true"></span>
         <li v-for="item in items" :key="item.id"
             class="box mb-3"
             :class="info(item).rowClass">
